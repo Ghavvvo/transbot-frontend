@@ -1,97 +1,72 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, BookOpen, Award, Timer } from "lucide-react";
-import examImage from "@/assets/exam-generator.jpg";
+import { FileQuestion, Zap, BookOpen, Timer, Award, FileText } from "lucide-react";
+import examIllustration from "@/assets/exam-illustration.jpg";
+
+const features = [
+  {
+    icon: BookOpen,
+    title: "Múltiples Temas",
+    description: "Señales, normativas, infracciones y más"
+  },
+  {
+    icon: Timer,
+    title: "Tiempo Real", 
+    description: "Genera exámenes en segundos"
+  },
+  {
+    icon: Award,
+    title: "Calificación",
+    description: "Resultados y retroalimentación instantánea"
+  },
+  {
+    icon: FileText,
+    title: "Personalizado",
+    description: "Adapta dificultad y contenido"
+  }
+];
 
 const ExamSection = () => {
   return (
-    <section className="py-20 px-4 bg-muted/30">
+    <section id="exams" className="py-20 px-4 bg-gradient-to-br from-primary/5 via-background to-background">
       <div className="container mx-auto max-w-6xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
             <div className="space-y-4">
-              <div className="flex items-center space-x-2 text-accent font-medium">
-                <FileText className="h-5 w-5" />
+              <div className="flex items-center space-x-2 text-primary font-medium">
+                <FileQuestion className="h-5 w-5" />
                 <span className="text-sm uppercase tracking-wide">Exámenes IA</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-space font-bold text-foreground">
                 Genera Exámenes
-                <span className="block text-primary">Automáticamente</span>
+                <span className="block text-primary">Automatizados</span>
               </h2>
               <p className="text-lg text-muted-foreground font-inter">
-                Crea exámenes de tránsito personalizados al instante. 
-                Perfectos para practicar antes del examen oficial.
+                Crea exámenes personalizados de tránsito con preguntas actualizadas 
+                y adaptadas a tu nivel de conocimiento.
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
-              <Card className="bg-gradient-card border-border shadow-card">
-                <CardHeader className="pb-3">
-                  <div className="p-2 bg-primary/10 rounded-lg w-fit">
-                    <BookOpen className="h-5 w-5 text-primary" />
-                  </div>
-                  <CardTitle className="text-sm font-space">Múltiples Temas</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-xs font-inter">
-                    Señales, normativas, infracciones y más
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-card border-border shadow-card">
-                <CardHeader className="pb-3">
-                  <div className="p-2 bg-secondary/10 rounded-lg w-fit">
-                    <Timer className="h-5 w-5 text-secondary" />
-                  </div>
-                  <CardTitle className="text-sm font-space">Tiempo Real</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-xs font-inter">
-                    Genera exámenes en segundos
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-card border-border shadow-card">
-                <CardHeader className="pb-3">
-                  <div className="p-2 bg-accent/10 rounded-lg w-fit">
-                    <Award className="h-5 w-5 text-accent" />
-                  </div>
-                  <CardTitle className="text-sm font-space">Calificación</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-xs font-inter">
-                    Resultados y retroalimentación instantánea
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-card border-border shadow-card">
-                <CardHeader className="pb-3">
-                  <div className="p-2 bg-primary-glow/10 rounded-lg w-fit">
-                    <FileText className="h-5 w-5 text-primary-glow" />
-                  </div>
-                  <CardTitle className="text-sm font-space">Personalizado</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-xs font-inter">
-                    Adapta dificultad y contenido
-                  </CardDescription>
-                </CardContent>
-              </Card>
+              {features.map((feature, index) => (
+                <div key={index} className="p-4 bg-card rounded-xl border border-border">
+                  <feature.icon className="h-8 w-8 text-primary mb-3" />
+                  <h3 className="font-space font-semibold mb-2">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground font-inter">{feature.description}</p>
+                </div>
+              ))}
             </div>
 
-            <Button variant="secondary" size="xl" className="w-full sm:w-auto">
+            <Button variant="minimal" size="lg" className="w-full sm:w-auto">
+              <Zap className="mr-2 h-5 w-5" />
               Generar Examen Ahora
             </Button>
           </div>
-
+          
           <div className="relative">
             <div className="rounded-2xl overflow-hidden shadow-card">
               <img 
-                src={examImage} 
-                alt="Exam Generator Interface" 
+                src={examIllustration} 
+                alt="Exam Generator Illustration" 
                 className="w-full h-auto object-cover"
               />
             </div>
