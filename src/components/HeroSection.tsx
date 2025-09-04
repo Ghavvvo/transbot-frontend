@@ -22,12 +22,12 @@ const HeroSection = () => {
                 <Sparkles className="h-5 w-5" />
                 <span className="text-sm uppercase tracking-wide font-inter">IA Avanzada</span>
               </div>
-              <h1 className="text-4xl md:text-6xl font-space font-bold text-white leading-tight">
+              <h1 className="text-4xl md:text-6xl font-space font-bold text- leading-tight">
                 Domina el 
                 <span className="block text-primary-glow">Código Vial</span>
                 con IA
               </h1>
-              <p className="text-xl text-white/80 font-inter max-w-lg">
+              <p className="text-xl font-inter max-w-lg">
                 Tu asistente inteligente para consultas de tránsito y generación 
                 automática de exámenes. Aprende de forma rápida y efectiva.
               </p>
@@ -37,7 +37,7 @@ const HeroSection = () => {
               <Button 
                 variant="minimal" 
                 size="lg" 
-                className="text-white border-white/20 hover:bg-white/10"
+                className=" border-white/20 hover:bg-white/10"
                 onClick={() => scrollToSection('rag')}
               >
                 <MessageCircle className="mr-2 h-5 w-5" />
@@ -46,7 +46,7 @@ const HeroSection = () => {
               <Button 
                 variant="minimal" 
                 size="lg" 
-                className="text-white border-white/20 hover:bg-white/10"
+                className="border-white/20 hover:bg-white/10"
                 onClick={() => scrollToSection('exams')}
               >
                 <BookOpen className="mr-2 h-5 w-5" />
