@@ -58,7 +58,7 @@ const Header = () => {
           
           <Button
             size="sm"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
+            className="group bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 font-medium"
           >
             Iniciar Sesión
           </Button>

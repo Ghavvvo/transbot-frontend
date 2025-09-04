@@ -48,8 +48,8 @@ const HeroSection = () => {
                 className="border-2 border-primary/30 hover:border-primary text-foreground hover:bg-primary/5 backdrop-blur-sm"
                 onClick={() => scrollToSection('exams')}
               >
-                <BookOpen className="mr-2 h-5 w-5" />
                 Generar Examen
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
           </div>

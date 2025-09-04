@@ -1,32 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MessageCircle, Send, Sparkles } from "lucide-react";
+import { MessageCircle, Send, Sparkles, AlertCircle, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { useChat } from "@/hooks/useChat";
+import SourcesDisplay from "./SourcesDisplay";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const RagSection = () => {
   const [question, setQuestion] = useState("");
-  const [messages, setMessages] = useState<{text: string, isUser: boolean}[]>([]);
+  const { messages, isLoading, error, sendMessage, clearMessages } = useChat();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!question.trim()) return;
-    
-    // Agregar pregunta del usuario
-    setMessages(prev => [...prev, { text: question, isUser: true }]);
-    
-    // Simular respuesta del AI (aquí se conectaría con el RAG real)
-    setTimeout(() => {
-      setMessages(prev => [...prev, { 
-        text: "Esta es una respuesta simulada del asistente IA. En la implementación real, aquí se conectaría con el sistema RAG para obtener información precisa sobre normativas de tránsito.",
-        isUser: false 
-      }]);
-    }, 1000);
-    
+    if (!question.trim() || isLoading) return;
+
+    await sendMessage(question);
     setQuestion("");
   };
 
   return (
-    <section id="rag" className="min-h-screen flex items-center justify-center py-20 px-4 bg-gradient-to-br from-background via-background to-primary/5">
+    <section id="rag" className="min-h-screen flex items-center justify-center py-10 px-4 bg-gradient-to-br from-background via-background to-primary/5">
       <div className="container mx-auto max-w-4xl">
         <div className="text-center space-y-8">
           <div className="space-y-4">
@@ -45,20 +38,62 @@ const RagSection = () => {
           </div>
 
           <div className="bg-card/50 backdrop-blur-sm p-8 rounded-2xl shadow-card border border-border max-w-2xl mx-auto">
+            {/* Error Alert */}
+            {error && (
+              <Alert className="mb-6 border-destructive/50 bg-destructive/10">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription className="text-destructive">
+                  {error}
+                </AlertDescription>
+              </Alert>
+            )}
+
             {/* Chat Messages */}
             {messages.length > 0 && (
-              <div className="mb-6 max-h-60 overflow-y-auto space-y-4">
+              <div className="mb-6 max-h-96 overflow-y-auto space-y-4">
                 {messages.map((message, index) => (
                   <div key={index} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-xs md:max-w-md p-3 rounded-lg ${
-                      message.isUser 
-                        ? 'bg-primary text-primary-foreground' 
-                        : 'bg-muted text-foreground'
-                    }`}>
-                      <p className="text-sm font-inter">{message.text}</p>
+                    <div className={`max-w-full ${message.isUser ? 'max-w-xs md:max-w-md' : 'w-full'}`}>
+                      <div className={`p-4 rounded-lg ${
+                        message.isUser 
+                          ? 'bg-gradient-to-r from-primary to-primary-glow text-primary-foreground' 
+                          : 'bg-muted text-foreground'
+                      }`}>
+                        <p className="text-sm font-inter leading-relaxed">{message.text}</p>
+                        {!message.isUser && message.sources && (
+                          <SourcesDisplay
+                            sources={message.sources}
+                            confidence={message.confidence || 0}
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-muted text-foreground p-4 rounded-lg">
+                      <div className="flex items-center space-x-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span className="text-sm font-inter">Procesando tu consulta...</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Clear Chat Button */}
+            {messages.length > 0 && (
+              <div className="mb-4 flex justify-center">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={clearMessages}
+                  className="text-muted-foreground"
+                >
+                  Limpiar conversación
+                </Button>
               </div>
             )}
 
@@ -69,15 +104,20 @@ const RagSection = () => {
                   placeholder="¿Cuál es la velocidad máxima en zona urbana?"
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
+                  disabled={isLoading}
                   className="pr-16 font-inter text-lg py-6 border-border/50 focus:border-primary bg-background/50"
                 />
                 <Button 
                   type="submit" 
-                  variant="minimal"
-                  size="sm" 
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
+                  size="sm"
+                  disabled={!question.trim() || isLoading}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary"
                 >
-                  <Send className="h-4 w-4" />
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
                 </Button>
               </div>
             </form>
