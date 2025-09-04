@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { MessageCircle, BookOpen, Sparkles } from "lucide-react";
+import { MessageCircle, BookOpen, Sparkles, ArrowRight } from "lucide-react";
 import heroIllustration from "@/assets/hero-illustration.jpg";
 
 const HeroSection = () => {
@@ -35,18 +35,18 @@ const HeroSection = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
-                variant="minimal" 
-                size="lg" 
-                className=" border-white/20 hover:bg-white/10"
+                size="lg"
+                className="group bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
                 onClick={() => scrollToSection('rag')}
               >
                 <MessageCircle className="mr-2 h-5 w-5" />
                 Hacer Consulta
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button 
-                variant="minimal" 
-                size="lg" 
-                className="border-white/20 hover:bg-white/10"
+                variant="outline"
+                size="lg"
+                className="border-2 border-primary/30 hover:border-primary text-foreground hover:bg-primary/5 backdrop-blur-sm"
                 onClick={() => scrollToSection('exams')}
               >
                 <BookOpen className="mr-2 h-5 w-5" />
