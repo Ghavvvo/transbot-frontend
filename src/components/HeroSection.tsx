@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { MessageCircle, BookOpen, Sparkles, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const scrollToSection = (sectionId: string) => {
@@ -42,15 +43,16 @@ const HeroSection = () => {
                 Hacer Consulta
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button 
-                variant="outline"
-                size="lg"
-                className="border-2 border-primary/30 hover:border-primary text-foreground hover:bg-primary/5 backdrop-blur-sm"
-                onClick={() => scrollToSection('exams')}
-              >
-                Generar Examen
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              <Link to="/test">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-primary/30 hover:border-primary text-foreground hover:bg-primary/5 backdrop-blur-sm"
+                >
+                  Generar Examen
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

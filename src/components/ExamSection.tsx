@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { FileQuestion, Zap, BookOpen, Timer, Award, FileText, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import examIllustration from "@/assets/exam-illustration.jpg";
 
 const features = [
@@ -68,14 +69,16 @@ const ExamSection = () => {
 							))}
 						</div>
 
-						<Button
-							size="lg"
-							className="group bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
-						>
-							<Zap className="mr-2 h-5 w-5" />
-							Generar Examen Ahora
-							<ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-						</Button>
+						<Link to="/test">
+							<Button
+								size="lg"
+								className="group bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
+							>
+								<Zap className="mr-2 h-5 w-5" />
+								Generar Examen Ahora
+								<ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+							</Button>
+						</Link>
 					</div>
 
 					<div className="relative">

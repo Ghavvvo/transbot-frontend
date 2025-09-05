@@ -35,3 +35,24 @@ export interface Message {
   sources?: ChatSource[];
   confidence?: number;
 }
+
+// Test generation types
+export interface TestGenerationRequest {
+  num_questions?: number;
+}
+
+export interface TestQuestion {
+  question: string;
+  options: string[];
+  correct_answer: 1 | 2 | 3;
+  article_id: number;
+  article_content: string;
+}
+
+export interface TestGenerationResponse {
+  test_id: string;
+  total_questions: number;
+  questions: TestQuestion[];
+  generated_at: string;
+  articles_used: number[];
+}
