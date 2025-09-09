@@ -72,7 +72,7 @@ const ExamSection = () => {
 						<Link to="/test">
 							<Button
 								size="lg"
-								className="group bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
+								className="group my-4 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
 							>
 								<Zap className="mr-2 h-5 w-5" />
 								Generar Examen Ahora
