@@ -10,6 +10,9 @@ const Header = () => {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
       setIsMenuOpen(false);
+    } else {
+      // If current page doesn't contain the section (e.g., /test), navigate to home with hash
+      window.location.href = `/#${sectionId}`;
     }
   };
 

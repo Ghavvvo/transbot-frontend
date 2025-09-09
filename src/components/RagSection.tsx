@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const RagSection = () => {
   const [question, setQuestion] = useState("");
-  const { messages, isLoading, error, sendMessage, clearMessages } = useChat();
+  const { messages, isLoading, error, sendMessage } = useChat();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,28 +48,27 @@ const RagSection = () => {
               </Alert>
             )}
 
-            {/* Chat Messages */}
+            {/* Single Response Display */}
             {messages.length > 0 && (
-              <div className="mb-6 max-h-96 overflow-y-auto space-y-4">
-                {messages.map((message, index) => (
-                  <div key={index} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-full ${message.isUser ? 'max-w-xs md:max-w-md' : 'w-full'}`}>
-                      <div className={`p-4 rounded-lg ${
-                        message.isUser 
-                          ? 'bg-gradient-to-r from-primary to-primary-glow text-primary-foreground' 
-                          : 'bg-muted text-foreground'
-                      }`}>
-                        <p className="text-sm font-inter leading-relaxed">{message.text}</p>
-                        {!message.isUser && message.sources && (
-                          <SourcesDisplay
-                            sources={message.sources}
-                            confidence={message.confidence || 0}
-                          />
-                        )}
+              <div className="mb-6 space-y-4">
+                {/* Show only latest AI response */}
+                {(() => {
+                  const lastAi = [...messages].reverse().find(m => !m.isUser);
+                  if (!lastAi) return null;
+                  return (
+                    <div className="flex justify-start">
+                      <div className="w-full">
+                        <div className="p-4 rounded-lg bg-muted text-foreground">
+                          <p className="text-sm font-inter leading-relaxed whitespace-pre-wrap">{lastAi.text}</p>
+                          {lastAi.sources && (
+                            <SourcesDisplay sources={lastAi.sources} />
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })()}
+
                 {isLoading && (
                   <div className="flex justify-start">
                     <div className="bg-muted text-foreground p-4 rounded-lg">
@@ -80,20 +79,6 @@ const RagSection = () => {
                     </div>
                   </div>
                 )}
-              </div>
-            )}
-
-            {/* Clear Chat Button */}
-            {messages.length > 0 && (
-              <div className="mb-4 flex justify-center">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={clearMessages}
-                  className="text-muted-foreground"
-                >
-                  Limpiar conversación
-                </Button>
               </div>
             )}
 
