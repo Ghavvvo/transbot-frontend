@@ -41,14 +41,30 @@ const TestGenerationPage = () => {
   } = useTestGeneration();
 
   const [selectedNumQuestions, setSelectedNumQuestions] = useState(20);
+  const [revealedHints, setRevealedHints] = useState<Set<number>>(new Set());
 
   const handleGenerateTest = () => {
     generateTest(selectedNumQuestions);
+    setRevealedHints(new Set()); // Reset hints when generating new test
   };
 
   const handleAnswerSelect = (answer: number) => {
     selectAnswer(currentQuestionIndex, answer);
   };
+
+  const toggleHint = (questionIndex: number) => {
+    setRevealedHints(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(questionIndex)) {
+        newSet.delete(questionIndex);
+      } else {
+        newSet.add(questionIndex);
+      }
+      return newSet;
+    });
+  };
+
+  const isHintRevealed = (questionIndex: number) => revealedHints.has(questionIndex);
 
   const results = calculateResults();
   const currentQuestion = currentTest?.questions[currentQuestionIndex];
@@ -317,11 +333,23 @@ const TestGenerationPage = () => {
             <CardContent className="p-4">
               <div className="flex items-start space-x-2">
                 <BookOpen className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
-                <div className="space-y-1">
-                  <p className="text-sm font-medium">Artículo {currentQuestion.article_id}</p>
-                  <p className="text-sm text-muted-foreground line-clamp-3">
-                    {currentQuestion.article_content}
-                  </p>
+                <div className="space-y-2 flex-1">
+                  {isHintRevealed(currentQuestionIndex) ? (
+                    <>
+                      <p className="text-sm font-medium">Artículo {currentQuestion.article_id}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {currentQuestion.article_content}
+                      </p>
+                    </>
+                  ) : (
+                    <Button
+                      onClick={() => toggleHint(currentQuestionIndex)}
+                      variant="link"
+                      className="p-0 h-auto text-sm font-medium text-primary underline"
+                    >
+                      Ver Pista
+                    </Button>
+                  )}
                 </div>
               </div>
             </CardContent>
