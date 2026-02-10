@@ -16,7 +16,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename="/transbot-frontend">
         <div className="min-h-screen bg-background font-inter">
           <Header />
           <main>
