@@ -1,49 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MessageCircle, Send, Sparkles, AlertCircle } from "lucide-react";
+import { MessageCircle, Send, Sparkles, AlertCircle, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { askQuestion } from "@/services/api";
+import { useChat } from "@/hooks/useChat";
+import SourcesDisplay from "./SourcesDisplay";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const RagSection = () => {
   const [question, setQuestion] = useState("");
-  const [messages, setMessages] = useState<{text: string, isUser: boolean}[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { messages, isLoading, error, sendMessage } = useChat();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!question.trim() || isLoading) return;
-    
-    // Agregar pregunta del usuario
-    setMessages(prev => [...prev, { text: question, isUser: true }]);
-    const currentQuestion = question;
+
+    await sendMessage(question);
     setQuestion("");
-    setIsLoading(true);
-    setError(null);
-    
-    try {
-      // Llamada REAL al backend RAG
-      const result = await askQuestion(currentQuestion);
-      
-      setMessages(prev => [...prev, { 
-        text: result.answer,
-        isUser: false 
-      }]);
-    } catch (err) {
-      setError('Error al obtener respuesta. Por favor, intenta de nuevo.');
-      console.error('Error:', err);
-      
-      // Remover la pregunta si hubo error
-      setMessages(prev => prev.slice(0, -1));
-      setQuestion(currentQuestion);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   return (
-    <section id="rag" className="min-h-screen flex items-center justify-center py-20 px-4 bg-gradient-to-br from-background via-background to-primary/5">
+    <section id="rag" className="min-h-screen flex items-center justify-center py-10 px-4 bg-gradient-to-br from-background via-background to-primary/5">
       <div className="container mx-auto max-w-4xl">
         <div className="text-center space-y-8">
           <div className="space-y-4">
@@ -64,33 +40,41 @@ const RagSection = () => {
           <div className="bg-card/50 backdrop-blur-sm p-8 rounded-2xl shadow-card border border-border max-w-2xl mx-auto">
             {/* Error Alert */}
             {error && (
-              <Alert variant="destructive" className="mb-4">
+              <Alert className="mb-6 border-destructive/50 bg-destructive/10">
                 <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription className="text-destructive">
+                  {error}
+                </AlertDescription>
               </Alert>
             )}
 
-            {/* Chat Messages */}
+            {/* Single Response Display */}
             {messages.length > 0 && (
-              <div className="mb-6 max-h-60 overflow-y-auto space-y-4">
-                {messages.map((message, index) => (
-                  <div key={index} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-xs md:max-w-md p-3 rounded-lg ${
-                      message.isUser 
-                        ? 'bg-primary text-primary-foreground' 
-                        : 'bg-muted text-foreground'
-                    }`}>
-                      <p className="text-sm font-inter">{message.text}</p>
+              <div className="mb-6 space-y-4">
+                {/* Show only latest AI response */}
+                {(() => {
+                  const lastAi = [...messages].reverse().find(m => !m.isUser);
+                  if (!lastAi) return null;
+                  return (
+                    <div className="flex justify-start">
+                      <div className="w-full">
+                        <div className="p-4 rounded-lg bg-muted text-foreground">
+                          <p className="text-sm font-inter leading-relaxed whitespace-pre-wrap">{lastAi.text}</p>
+                          {lastAi.sources && (
+                            <SourcesDisplay sources={lastAi.sources} />
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })()}
+
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-muted p-3 rounded-lg">
-                      <div className="flex space-x-2">
-                        <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                        <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                    <div className="bg-muted text-foreground p-4 rounded-lg">
+                      <div className="flex items-center space-x-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span className="text-sm font-inter">Procesando tu consulta...</span>
                       </div>
                     </div>
                   </div>
@@ -110,12 +94,15 @@ const RagSection = () => {
                 />
                 <Button 
                   type="submit" 
-                  variant="minimal"
-                  size="sm" 
-                  disabled={isLoading || !question.trim()}
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
+                  size="sm"
+                  disabled={!question.trim() || isLoading}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary"
                 >
-                  <Send className="h-4 w-4" />
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
                 </Button>
               </div>
             </form>

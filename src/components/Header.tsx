@@ -10,6 +10,9 @@ const Header = () => {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
       setIsMenuOpen(false);
+    } else {
+      // If current page doesn't contain the section (e.g., /test), navigate to home with hash
+      window.location.href = `/#${sectionId}`;
     }
   };
 
@@ -56,7 +59,10 @@ const Header = () => {
             </button>
           </nav>
           
-          <Button variant="login">
+          <Button
+            size="sm"
+            className="group bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 font-medium"
+          >
             Iniciar Sesión
           </Button>
         </div>
