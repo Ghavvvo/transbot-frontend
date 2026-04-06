@@ -16,7 +16,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter basename="./">
+      <BrowserRouter basename="/">
         <div className="min-h-screen bg-background font-inter">
           <Header />
           <main>
