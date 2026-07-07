@@ -1,6 +1,6 @@
 import { ChatRequest, ChatResponse, HealthResponse, TestGenerationRequest, TestGenerationResponse } from '@/types/api';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'http://20.29.200.78:5000/api';
 
 class ApiService {
   // Check server health and readiness
