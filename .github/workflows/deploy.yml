@@ -23,8 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm config set allow-scripts true
-          pnpm install --no-frozen-lockfile
+          pnpm install --no-frozen-lockfile --allow-scripts
       - run: pnpm run build
 
       - uses: peaceiris/actions-gh-pages@v4
